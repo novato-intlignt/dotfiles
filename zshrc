@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git web-search)
+plugins=(git web-search sudo archlinux copypath fzf)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -162,6 +162,7 @@ alias l='lsd --group-dirs=first'
 alias lla='lsd -lha --group-dirs=first'
 alias ls='lsd --group-dirs=first'
 alias cl='clear'
+alias ex='exit'
 alias cat='bat'
 alias dot='/home/cubyto/dotfiles/dotdrop/dotdrop.sh'
 alias vim='nvim'
@@ -171,7 +172,7 @@ alias vim='nvim'
 # Plugins
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh-sudo/sudo.plugin.zsh
+#source /usr/share/zsh-sudo/sudo.plugin.zsh
 
 # Functions
 function mkt(){
@@ -235,9 +236,10 @@ function rmk(){
 (( ! ${+functions[p10k-instant-prompt-finalize]} )) || p10k-instant-prompt-finalize
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
-bindkey "^[[H" beginning-of-line
-bindkey "^[[F" end-of-line
+bindkey "^[[5~" beginning-of-line
+bindkey "^[[6~" end-of-line
 bindkey "^[[3~" delete-char
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
+(( ! ${+functions[p10k]} )) || p10k finalize
