@@ -1,0 +1,11 @@
+[init]
+	defaultBranch = main
+[user]
+	email = emiliocube165@gmail.com
+	name = cubyto
+[pull]
+	rebase = true
+[core]
+	editor = nvim
+[branch]
+	autosetuprebase = always
