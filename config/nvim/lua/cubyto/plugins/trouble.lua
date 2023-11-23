@@ -5,6 +5,7 @@ return {
     'folke/lsp-colors.nvim',
     "nvim-telescope/telescope.nvim",
   },
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
     local actions = require("telescope.actions")
     local trouble = require("trouble.providers.telescope")

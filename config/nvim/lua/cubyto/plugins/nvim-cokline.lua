@@ -196,9 +196,6 @@ return {
               style = 'bold'
             }},
         },
-        history = {
-          enable = false,
-        },
         components = {
           components.separator,
           components.left_half_circle,

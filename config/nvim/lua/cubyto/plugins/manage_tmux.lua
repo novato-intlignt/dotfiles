@@ -15,12 +15,12 @@ return{
       -- default_size = '30%', -- on panes, the default size
       -- open_new_as = 'window' -- open new command as.  options: pane, window, separated_session.
     })
-    vim.keymap.set('v', 'l', tmux.send_text_to, {}) -- Send text to a open terminal?
-    vim.keymap.set('n', 'lo', tmux.switch_orientation, {}) -- Open new panes as vertical / horizontal?
-    vim.keymap.set('n', 'lp', tmux.switch_open_as, {}) -- Open new terminals as panes or windows?
-    vim.keymap.set('n', 'lk', tmux.kill_all_terms, {}) -- Kill all open terms.
-    vim.keymap.set('n', 'l!', tmux.run_project_terms, {}) -- Run the per project commands
-    vim.keymap.set('n', 'lf', function() vim.cmd(":Telescope tmux-awesome-manager list_terms") end, {}) -- List all terminals
-    vim.keymap.set('n', 'll', function() vim.cmd(":Telescope tmux-awesome-manager list_open_terms") end, {}) -- List open terminals
+    vim.keymap.set('v', '<leader>l', tmux.send_text_to, {}) -- Send text to a open terminal?
+    vim.keymap.set('n', '<leader>lo', tmux.switch_orientation, {}) -- Open new panes as vertical / horizontal?
+    vim.keymap.set('n', '<leader>lp', tmux.switch_open_as, {}) -- Open new terminals as panes or windows?
+    vim.keymap.set('n', '<leader>lk', tmux.kill_all_terms, {}) -- Kill all open terms.
+    vim.keymap.set('n', '<leader>l!', tmux.run_project_terms, {}) -- Run the per project commands
+    vim.keymap.set('n', '<leader>lf', function() vim.cmd(":Telescope tmux-awesome-manager list_terms") end, {}) -- List all terminals
+    vim.keymap.set('n', '<leader>ll', function() vim.cmd(":Telescope tmux-awesome-manager list_open_terms") end, {}) -- List open terminals
   end
 }

@@ -11,7 +11,7 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
-    
+
     telescope.setup({
       defaults = {
         mappings = {
@@ -50,7 +50,7 @@ return {
           -- Show builtin git pickers when executing "show_custom_functions" or :AdvancedGitSearch
           show_builtin_git_pickers = false,
           entry_default_author_or_date = "author", -- one of "author" or "date"
-    
+
           -- Telescope layout setup
           telescope_theme = {
               function_name_1 = {
@@ -61,25 +61,25 @@ return {
               show_custom_functions = {
                   layout_config = { width = 0.4, height = 0.4 },
               },
-    
+
           }
         }
       }
     })
     require("telescope").load_extension "file_browser"
-    require("telescope").load_extension "advanced_git_search" 
-    require("telescope").load_extension "neoclip" 
-    
+    require("telescope").load_extension "advanced_git_search"
+    require("telescope").load_extension "neoclip"
+
     local builtin = require("telescope.builtin")
-    
+
     --vim.keymap.set("n", "<leader>fb", builtin.file_browser, { desc = "Find a file" })
     vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Fuzzy find files in cwd" })
     vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Fuzzy find recent files" })
     vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find string in cwd" })
     vim.keymap.set("n", "<leader>fc", builtin.grep_string, { desc = "Find string under cursor in cwd" })
-    
+
     vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
-    
+
     -- File - Browser
     vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope file_browser<CR>", { silent = true })
 
@@ -91,6 +91,6 @@ return {
     vim.keymap.set("n", "<leader>gf", builtin.git_files, { desc = "Show the git files" })
 
     -- NEOCLIP search
-   vim.api.nvim_set_keymap("n", "<leader>cb", ":Telescope neoclip<CR>", { silent = true}) 
+   vim.api.nvim_set_keymap("n", "<leader>cb", ":Telescope neoclip<CR>", { silent = true})
   end,
 }

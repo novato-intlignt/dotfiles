@@ -1,5 +1,6 @@
 return{
   "ziontee113/color-picker.nvim",
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
 
     vim.keymap.set("n", "<C-c>", "<cmd>PickColor<cr>")
