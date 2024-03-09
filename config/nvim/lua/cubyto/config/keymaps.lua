@@ -10,8 +10,8 @@ vim.api.nvim_set_keymap("i", "jk", "<ESC>", opts)
 keymap.set("n", "<leader>h", ":nohl<CR>", opts, { desc = "Clean the history search" })
 keymap.set("n", "<leader>rr", "<cmd>source %<CR>", { desc = "Execute the current path" })
 
-keymap.set("n", ">", ">gv", { desc = "After tab in re-select the same" })
-keymap.set("n", ">", "<gv", { desc = "After tab out re-select the same" })
+keymap.set("v", ">", ">gv", { desc = "After tab in re-select the same" })
+keymap.set("v", ">", "<gv", { desc = "After tab out re-select the same" })
 
 keymap.set("n", "n", "nzzzv", { desc = "Goes to the next result on the search and put the cursor in the middle" })
 keymap.set("n", "N", "Nzzzv", { desc = "Goes to the prev result on the search and put the cursor in the middle" })

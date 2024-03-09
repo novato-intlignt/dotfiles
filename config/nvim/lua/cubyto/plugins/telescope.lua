@@ -7,6 +7,7 @@ return {
 		"nvim-tree/nvim-web-devicons",
 		"nvim-telescope/telescope-file-browser.nvim",
 		"aaronhallaert/advanced-git-search.nvim",
+		"olacin/telescope-cc.nvim",
 	},
 	keys = {
 		{
@@ -97,6 +98,7 @@ return {
 		require("telescope").load_extension("file_browser")
 		require("telescope").load_extension("advanced_git_search")
 		require("telescope").load_extension("neoclip")
+		require("telescope").load_extension("conventional_commits")
 
 		local builtin = require("telescope.builtin")
 
@@ -118,5 +120,19 @@ return {
 
 		-- NEOCLIP search
 		vim.api.nvim_set_keymap("n", "<leader>cb", ":Telescope neoclip<CR>", { silent = true })
+		local function create_conventional_commit()
+			local actions = require("telescope._extensions.conventional_commits.actions")
+			local picker = require("telescope._extensions.conventional_commits.picker")
+			local themes = require("telescope.themes")
+
+			-- if you use the picker directly you have to provide your theme manually
+			picker({
+				action = actions.prompt,
+				include_body_and_footer = true,
+				-- theme = themes["get_ivy"]() -- ivy theme
+			})
+		end
+
+		vim.keymap.set("n", "cc", create_conventional_commit, { desc = "Create conventional commit" })
 	end,
 }

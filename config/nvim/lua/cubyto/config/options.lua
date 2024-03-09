@@ -33,3 +33,5 @@ opt.swapfile = false
 -- able mose hover
 opt.mousemoveevent = true
 
+-- Disable native menu
+vim.g.neovide_menu_disabled = true

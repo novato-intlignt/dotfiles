@@ -77,7 +77,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git web-search sudo archlinux copypath fzf)
+plugins=(git web-search sudo archlinux copypath fzf npm node zsh-interactive-cd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -166,6 +166,8 @@ alias ex='exit'
 alias cat='bat'
 alias dot='/home/cubyto/dotfiles/dotdrop/dotdrop.sh'
 alias vim='nvim'
+alias zel='zellij'
+alias ms='mousepad'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
@@ -243,3 +245,7 @@ bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
 (( ! ${+functions[p10k]} )) || p10k finalize
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+
