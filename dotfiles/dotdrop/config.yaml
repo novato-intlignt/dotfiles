@@ -1,0 +1,37 @@
+config:
+  backup: true
+  banner: true
+  create: true
+  dotpath: dotfiles
+  keepdot: false
+  link_dotfile_default: nolink
+  link_on_import: nolink
+  longkey: false
+dotfiles:
+  f_zshrc:
+    src: zshrc
+    dst: ~/.zshrc
+  f_tmux.conf:
+    src: tmux.conf
+    dst: ~/.tmux.conf
+  f_gitconfig:
+    src: gitconfig
+    dst: ~/.gitconfig
+  d_nvim:
+    src: config/nvim
+    dst: ~/.config/nvim
+  f_p10k.zsh:
+    src: p10k.zsh
+    dst: ~/.p10k.zsh
+  d_zellij:
+    src: config/zellij
+    dst: ~/.config/zellij
+profiles:
+  hack4u:
+    dotfiles:
+    - f_zshrc
+    - f_tmux.conf
+    - f_gitconfig
+    - d_nvim
+    - f_p10k.zsh
+    - d_zellij
