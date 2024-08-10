@@ -31,6 +31,41 @@ return {
 			desc = "Find plugins",
 		},
 		{
+			"<leader>fc",
+			function()
+				require("telescope.builtin").find_files({
+					prompt_title = "Config",
+					cwd = "~/.config/nvim/lua/cubyto/config/",
+					attach_mappings = function(_, map)
+						local actions = require("telescope.actions")
+						local action_state = require("telescope.actions.state")
+						map("i", "<c-y>", function(prompt_bufnr)
+							local new_plugin = action_state.get_current_line()
+							actions.close(prompt_bufnr)
+							vim.cmd(string.format("edit ~/.config/nvim/lua/cubyto/config/%s.lua", new_plugin))
+						end)
+						return true
+					end,
+				})
+			end,
+			desc = "Find config",
+		},
+		{
+			"cc",
+			function()
+				local picker = require("telescope._extensions.conventional_commits.picker")
+				local actions = require("telescope.actions.state")
+
+				-- if you use the picker directly you have to provide your theme manually
+				picker({
+					action = actions.prompt,
+					include_body_and_footer = true,
+					-- theme = themes["get_ivy"]() -- ivy theme
+				})
+			end,
+			desc = "Create conventional commit",
+		},
+		{
 			"<leader>fb",
 			function()
 				require("telescope").extensions.file_browser.file_browser({ path = "%:h:p", select_buffer = true })
@@ -106,7 +141,7 @@ return {
 		vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Fuzzy find files in cwd" })
 		vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Fuzzy find recent files" })
 		vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find string in cwd" })
-		vim.keymap.set("n", "<leader>fc", builtin.grep_string, { desc = "Find string under cursor in cwd" })
+		vim.keymap.set("n", "<leader>fu", builtin.grep_string, { desc = "Find string under cursor in cwd" })
 
 		vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "View the helper page" })
 		vim.keymap.set("n", "<leader>bl", builtin.buffers, { desc = "Show the list of buffers" })
@@ -120,19 +155,5 @@ return {
 
 		-- NEOCLIP search
 		vim.api.nvim_set_keymap("n", "<leader>cb", ":Telescope neoclip<CR>", { silent = true })
-		local function create_conventional_commit()
-			local actions = require("telescope._extensions.conventional_commits.actions")
-			local picker = require("telescope._extensions.conventional_commits.picker")
-			local themes = require("telescope.themes")
-
-			-- if you use the picker directly you have to provide your theme manually
-			picker({
-				action = actions.prompt,
-				include_body_and_footer = true,
-				-- theme = themes["get_ivy"]() -- ivy theme
-			})
-		end
-
-		vim.keymap.set("n", "cc", create_conventional_commit, { desc = "Create conventional commit" })
 	end,
 }

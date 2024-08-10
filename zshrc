@@ -156,6 +156,9 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 PATH=/root/.local/bin:/snap/bin:/usr/sandbox/:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
 
 # Manual aliases
+# alias for sourcing the zshrc
+alias sr='source ~/.zshrc'
+alias dconf='dot update ~/dotfiles/dotdrop/config.yaml'
 alias ll='lsd -lh --group-dirs=first'
 alias la='lsd -a --group-dirs=first'
 alias l='lsd --group-dirs=first'
@@ -164,12 +167,65 @@ alias ls='lsd --group-dirs=first'
 alias cl='clear'
 alias ex='exit'
 alias cat='bat'
-alias dot='/home/cubyto/dotfiles/dotdrop/dotdrop.sh'
-alias vim='nvim'
+alias dot='~/dotfiles/dotdrop/dotdrop.sh'
 alias zel='zellij'
 alias ms='mousepad'
+alias pjava='~/.java/processing-4.3/processing-java'
+alias psys='pacman -Q | fzf'
+# Archives
+alias mtar='tar -zcvf' # mtar <archive_compress>
+alias utar='tar -zxvf' # utar <archive_decompress> <file_list>
+alias zip='zip -r' # z <archive_compress> <file_list>
+alias uzip='unzip' # uz <archive_decompress> -d <dir>
+# alias for cd up a directory
+alias ..='cd ..'              # Subir un directorio
+alias ...='cd ../..'          # Subir dos directorios
+alias ....='cd ../../..'      # Subir tres directorios
+alias ~='cd ~'                # Ir al directorio home
+# alias for making a directory and cd to it
+mcd () {
+    mkdir -p $1
+    cd $1
+}
+# alias for searching through ps
+alias psg="ps aux | grep -v grep | grep -i -e VSZ -e" 
+# alias for mkdir so that it makes required parent directory
+alias mkdir="mkdir -p"
+# alias for ranger
+alias fm='ranger'
+# alias for searching and installing packages
+alias pacs="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print \$2}\")' | xargs -ro sudo pacman -S"
+# alias for searching and removing packages from system
+alias pacr="pacman -Qq | fzf --multi --preview 'pacman -Qi {1}' | xargs -ro sudo pacman -Rns"
+# alias for searching and installing packages from AUR
+alias yays="yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print \$2}\")' | xargs -ro  yay -S"
+# alias for searching and removing packages from system of AUR
+alias yayr="yay -Qq | fzf --multi --preview 'yay -Qi {1}' | xargs -ro yay -Rns"
+# alias for searching packages from system
+alias p="pacman -Q | fzf"
+# alias for wifi
+alias wifi="nmtui-connect"
+# alias for grep
+alias grep='grep --color=auto'
+# alias for Neovim
+alias v='nvim'
+# alias for verbose cp, mv, rm
+alias mv='mv -v'
+alias cp='cp -vr'
+alias rm='rm -vr'
+# alias for running cpp files
+rc(){
+  g++ "$1" -o run
+  ./run
+}
+# alias for checking dunst
+alias dun='killall dunst && dunst &
+notify-send "cool1" "yeah it is working"
+notify-send "cool2" "yeah it is working"'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+alias zat='zathura'
+alias sio='sioyek'
 
 # Plugins
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -243,9 +299,88 @@ bindkey "^[[6~" end-of-line
 bindkey "^[[3~" delete-char
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
+# Mapeo de AltGr + a, w, s, d a las teclas de flecha
+bindkey '^[[1;5D' backward-char       # AltGr + a -> Flecha izquierda
+bindkey '^[[1;5C' forward-char        # AltGr + d -> Flecha derecha
+bindkey '^[[1;5A' up-line-or-history  # AltGr + w -> Flecha arriba
+bindkey '^[[1;5B' down-line-or-history # AltGr + s -> Flecha abajo
+
+
 
 (( ! ${+functions[p10k]} )) || p10k finalize
 source ~/powerlevel10k/powerlevel10k.zsh-theme
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+export PATH=$PATH:$HOME/.local/bin
 
 
+# ---- FZF -----
+
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --zsh)"
+
+# --- setup fzf theme ---
+fg="#CBE0F0"
+bg="#011628"
+bg_highlight="#143652"
+purple="#B388FF"
+blue="#06BCE4"
+cyan="#2CF9ED"
+
+
+# -- Use fd instead of fzf --
+
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+# Use fd (https://github.com/sharkdp/fd) for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --exclude .git . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type=d --hidden --exclude .git . "$1"
+}
+
+source ~/fzf-git.sh/fzf-git.sh
+
+show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+
+export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+  esac
+}
+# ----- Bat (better cat) -----
+
+export BAT_THEME=tokyonight_night
+
+# ---- Eza (better ls) -----
+
+alias ls="eza --icons=always --color=always --long --git --no-time --no-user --no-filesize --no-permissions"
+
+# ---- TheFuck -----
+
+# thefuck alias
+# eval $(thefuck --alias)
+# eval $(thefuck --alias fk)
+
+# ---- Zoxide (better cd) ----
+ eval "$(zoxide init zsh)"
+
+ alias cd="z"

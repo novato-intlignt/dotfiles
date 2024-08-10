@@ -23,6 +23,41 @@ return {
 		end
 
 		local lspkind = require("lspkind")
+
+		local kind_icons = {
+			article = "󰧮",
+			book = "",
+			incollection = "󱓷",
+			Function = "󰊕",
+			Constructor = "",
+			Text = "󰦨",
+			Method = "",
+			Field = "󰅪",
+			Variable = "󱃮",
+			Class = "",
+			Interface = "",
+			Module = "",
+			Property = "",
+			Unit = "",
+			Value = "󰚯",
+			Enum = "",
+			Keyword = "",
+			Snippet = "",
+			Color = "󰌁",
+			-- Color = "",
+			File = "",
+			Reference = "",
+			Folder = "",
+			EnumMember = "",
+			-- EnumMember = "",
+			Constant = "󰀫",
+			Struct = "",
+			-- Struct = "",
+			Event = "",
+			Operator = "󰘧",
+			TypeParameter = "",
+		}
+
 		-- Loads VScode style snippets from installed plugins (e.g. friendly-snippets)
 		require("luasnip/loaders/from_vscode").lazy_load()
 
@@ -53,11 +88,35 @@ return {
 				{ name = "path" }, -- file system paths
 			}),
 			-- Configure lspkind fot vs-code like pictograms in completion menu
+			--formatting = {
+			--format = lspkind.cmp_format({
+			--maxwidth = 50,
+			--ellipsis_char = "...",
+			--}),
+			--},
 			formatting = {
-				format = lspkind.cmp_format({
-					maxwidth = 50,
-					ellipsis_char = "...",
-				}),
+				fields = { "kind", "abbr", "menu" },
+				format = function(entry, vim_item)
+					lspkind.cmp_format({
+						maxwidth = 50,
+						ellipsis_char = "...",
+					})
+					vim_item.kind = string.format("%s", kind_icons[vim_item.kind]) -- Kind icons
+					vim_item.menu = ({
+						-- vimtex = (vim_item.menu ~= nil and vim_item.menu or "[VimTex]"),
+						-- vimtex = test_fn(vim_item.menu, entry.source.name),
+						vimtex = vim_item.menu,
+						luasnip = "[Snippet]",
+						nvim_lsp = "[LSP]",
+						buffer = "[Buffer]",
+						spell = "[Spell]",
+						-- orgmode = "[Org]",
+						-- latex_symbols = "[Symbols]",
+						cmdline = "[CMD]",
+						path = "[Path]",
+					})[entry.source.name]
+					return vim_item
+				end,
 			},
 		})
 		cmp.setup.buffer({
